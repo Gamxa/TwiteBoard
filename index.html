@@ -5,136 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TwiteBoard - Your X Dashboard</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-        body{font-family:'Roboto',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background-color:#000;color:#e7e9ea;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:15px;-webkit-font-smoothing:antialiased}
-        .container{background-color:#16181c;padding:2rem;border-radius:16px;border:1px solid #2f3336;text-align:center;width:100%;max-width:500px;box-shadow:0 8px 24px rgba(0,0,0,.5)}
-        h1{color:#e7e9ea;font-size:1.8rem;margin-bottom:.5rem}
-        p{color:#71767b;margin-bottom:1.5rem}
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body{font-family:'Inter',sans-serif;background-color:#fff;color:#0f1419;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:15px;-webkit-font-smoothing:antialiased}
+        .main-container{width:100%;max-width:400px}
         .hidden{display:none}
-        #login-btn,#logout-btn{background-color:#1d9bf0;color:#fff;border:none;padding:12px 24px;border-radius:99px;font-size:1rem;font-weight:700;cursor:pointer;transition:background-color .2s;display:inline-flex;align-items:center;gap:10px}
-        #login-btn:hover{background-color:#1a8cd8}
-        .x-logo{width:20px;height:20px}
-        .profile-section{display:flex;flex-direction:column;align-items:center;margin-bottom:2rem}
-        #profile-pic{width:80px;height:80px;border-radius:50%;border:3px solid #1d9bf0;margin-bottom:1rem;background-color:#202327}
-        #profile-name{font-size:1.5rem;font-weight:700;margin:0;color:#e7e9ea}
-        #profile-username{font-size:1rem;color:#71767b;margin:.25rem 0 0 0}
-        .stats-grid{display:grid;grid-template-columns:1fr;gap:1rem;text-align:left}
-        .stat-card{background-color:#202327;padding:1.5rem;border-radius:12px;border:1px solid #2f3336}
-        .stat-card h3{margin:0 0 .5rem 0;font-size:1rem;color:#71767b;font-weight:400}
-        .stat-card p{margin:0;font-size:2.5rem;font-weight:700;color:#e7e9ea}
-        #logout-btn{margin-top:2rem;background-color:rgba(224,36,94,.1);color:#e0245e;border:1px solid #e0245e}
-        #loading-message{font-weight:700;color:#1d9bf0;padding:2rem 0}
+        /* Login Screen */
+        .login-card{background-color:#fff;padding:2rem;border-radius:16px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+        .login-card h1{font-size:1.8rem;font-weight:900}
+        .login-card p{color:#536471;margin-bottom:1.5rem}
+        #login-btn{background-color:#0f1419;color:#fff;border:none;padding:12px 24px;border-radius:99px;font-size:1rem;font-weight:700;cursor:pointer;transition:background-color .2s;display:inline-flex;align-items:center;gap:10px}
+        /* Dashboard Screen */
+        .banner-img{width:100%;height:130px;background-color:#cfd9de;object-fit:cover;border-radius:16px 16px 0 0}
+        .profile-container{background-color:#fff;box-shadow:0 8px 24px rgba(0,0,0,0.1);border-radius:16px}
+        .profile-header{padding:1rem 1.5rem;position:relative;margin-top:-50px}
+        .profile-pic{width:100px;height:100px;border-radius:50%;border:4px solid #fff}
+        .profile-info{text-align:left;margin-top:.5rem}
+        .profile-info .name{font-size:1.5rem;font-weight:900;margin:0}
+        .profile-info .username{font-size:1rem;color:#536471;margin:0}
+        .overall-stats{display:flex;gap:1.5rem;padding:1rem 1.5rem;border-bottom:1px solid #eff3f4}
+        .stat-item{text-align:left}
+        .stat-item .count{font-weight:700}.stat-item .label{color:#536471}
+        .todays-data{padding:1.5rem}
+        .todays-data h2{text-align:center;margin:0 0 1.5rem 0;font-weight:900}
+        .todays-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+        .todays-grid .stat-item p{margin:0;font-size:1.2rem;font-weight:700}
+        #logout-btn{margin-top:1.5rem;background:transparent;border:1px solid #cfd9de;color:#0f1419;padding:10px 20px;border-radius:99px;font-weight:700;cursor:pointer}
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="login-container"><h1>TwiteBoard</h1><p>Apni daily X/Twitter activity track karne ke liye login karein.</p><button id="login-btn"><svg viewBox="0 0 24 24" class="x-logo"><g><path fill="white" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>Connect with X</button></div>
-        <div id="dashboard" class="hidden"><h1>TwiteBoard</h1><div id="loading-message"><p>Aapka data laya ja raha hai...</p></div><div id="dashboard-content" class="hidden"><div class="profile-section"><img id="profile-pic" alt="Profile Picture"><h2 id="profile-name"></h2><p id="profile-username"></p></div><div class="stats-grid"><div class="stat-card"><h3>Total Posts Today</h3><p id="tweet-count"></p></div><div class="stat-card"><h3>Total Replies Today</h3><p id="reply-count"></p></div><div class="stat-card"><h3>Total Followers</h3><p id="follower-count"></p></div></div></div><button id="logout-btn">Logout</button></div>
+    <div class="main-container">
+        <!-- Login Screen -->
+        <div id="login-container" class="login-card">
+            <h1>TwiteBoard</h1><p>Apni daily X/Twitter activity track karne ke liye login karein.</p>
+            <button id="login-btn">Connect with X</button>
+        </div>
+        <!-- Dashboard Screen -->
+        <div id="dashboard" class="hidden">
+            <div class="profile-container">
+                <img id="banner-img" src="" alt="Banner">
+                <div class="profile-header">
+                    <img id="profile-pic" class="profile-pic" src="" alt="Profile">
+                    <div class="profile-info">
+                        <h2 id="profile-name" class="name"></h2>
+                        <p id="profile-username" class="username"></p>
+                    </div>
+                </div>
+                <div class="overall-stats">
+                    <div class="stat-item"><span id="following-count" class="count"></span> <span class="label">Following</span></div>
+                    <div class="stat-item"><span id="followers-count" class="count"></span> <span class="label">Followers</span></div>
+                    <div class="stat-item"><span id="total-posts-count" class="count"></span> <span class="label">Posts</span></div>
+                </div>
+                <div class="todays-data">
+                    <h2>Today's Data</h2>
+                    <div class="todays-grid">
+                        <div class="stat-item"><p id="profile-visits-count">--</p><span class="label">Profile Visits</span></div>
+                        <div class="stat-item"><p id="new-followers-count">--</p><span class="label">Followers</span></div>
+                        <div class="stat-item"><p id="today-posts-count"></p><span class="label">Posts</span></div>
+                        <div class="stat-item"><p id="today-replies-count"></p><span class="label">Replies</span></div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center;"><button id="logout-btn">Logout</button></div>
+        </div>
+        <!-- Loading Screen -->
+        <div id="loading-container" class="hidden login-card"><h1>TwiteBoard</h1><p>Aapka data laya ja raha hai...</p></div>
     </div>
-    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAVuS0B79Uk24GmPnbj3Tq7M3sgZeWdmA4",
-            authDomain: "twiteboard.firebaseapp.com",
-            projectId: "twiteboard",
-            storageBucket: "twiteboard.appspot.com",
-            messagingSenderId: "1029239475877",
-            appId: "1:1029239475877:web:7a2eefb61a2a0566ba874c",
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const twitterProvider = new firebase.auth.TwitterAuthProvider();
-        const ui = {
-            login: document.getElementById('login-container'),
-            dashboard: document.getElementById('dashboard'),
-            loginBtn: document.getElementById('login-btn'),
-            logoutBtn: document.getElementById('logout-btn'),
-            loader: document.getElementById('loading-message'),
-            content: document.getElementById('dashboard-content'),
-            pic: document.getElementById('profile-pic'),
-            name: document.getElementById('profile-name'),
-            username: document.getElementById('profile-username'),
-            tweets: document.getElementById('tweet-count'),
-            replies: document.getElementById('reply-count'),
-            followers: document.getElementById('follower-count'),
-        };
-
-        ui.loginBtn.addEventListener('click', () => {
-            auth.signInWithPopup(twitterProvider)
-                .then((result) => {
-                    ui.login.classList.add('hidden');
-                    ui.dashboard.classList.remove('hidden');
-                    ui.content.classList.add('hidden');
-                    ui.loader.classList.remove('hidden');
-                    const credential = result.credential;
-                    fetchDataFromBouncer(credential);
-                })
-                .catch(handleError);
-        });
-
-        ui.logoutBtn.addEventListener('click', () => {
-            auth.signOut();
-        });
-
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                // Refresh hone par, user ko logout-login karne ko bolo
-                // Kyunki hamare paas refresh ke baad fresh X tokens nahi hote
-                ui.login.classList.add('hidden');
-                ui.dashboard.classList.remove('hidden');
-                ui.content.classList.add('hidden');
-                ui.loader.classList.remove('hidden');
-                ui.loader.innerText = "Stats refresh karne ke liye, कृपया logout karke dobara login karein.";
-            } else {
-                ui.dashboard.classList.add('hidden');
-                ui.login.classList.remove('hidden');
-            }
-        });
-
-        async function fetchDataFromBouncer(credential) {
-            try {
-                const bouncerUrl = "https://twiteboard-bouncer.onrender.com/get-stats";
-
-                const response = await fetch(bouncerUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_token: credential.accessToken,
-                        user_secret: credential.secret
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || "Bouncer se jawab theek nahi aaya.");
-                }
-                const data = await response.json();
-                updateUI(data);
-            } catch (error) {
-                handleError(error);
-            }
-        }
-
-        function updateUI(data) {
-            ui.pic.src = data.profile.profile_image_url.replace('_normal', '_400x400');
-            ui.name.innerText = data.profile.name;
-            ui.username.innerText = `@${data.profile.username}`;
-            ui.tweets.innerText = data.stats.tweetsToday;
-            ui.replies.innerText = data.stats.repliesToday;
-            ui.followers.innerText = data.stats.followersCount;
-            
-            ui.loader.classList.add('hidden');
-            ui.content.classList.remove('hidden');
-        }
-
-        function handleError(error) {
-            console.error("Ek galti hui hai:", error);
-            if (error.code === 'auth/popup-closed-by-user') return;
-            ui.loader.innerText = `Error: ${error.message}`;
-            ui.loader.style.color = 'red';
-        }
+        const firebaseConfig={apiKey:"AIzaSyAVuS0B79Uk24GmPnbj3Tq7M3sgZeWdmA4",authDomain:"twiteboard.firebaseapp.com",projectId:"twiteboard",storageBucket:"twiteboard.appspot.com",messagingSenderId:"1029239475877",appId:"1:1029239475877:web:7a2eefb61a2a0566ba874c"};firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),twitterProvider=new firebase.auth.TwitterAuthProvider;const ui={login:document.getElementById("login-container"),dashboard:document.getElementById("dashboard"),loader:document.getElementById("loading-container"),loginBtn:document.getElementById("login-btn"),logoutBtn:document.getElementById("logout-btn"),bannerImg:document.getElementById("banner-img"),profilePic:document.getElementById("profile-pic"),profileName:document.getElementById("profile-name"),profileUsername:document.getElementById("profile-username"),following:document.getElementById("following-count"),followers:document.getElementById("followers-count"),totalPosts:document.getElementById("total-posts-count"),todayPosts:document.getElementById("today-posts-count"),todayReplies:document.getElementById("today-replies-count")};ui.loginBtn.addEventListener("click",()=>{ui.login.classList.add("hidden"),ui.loader.classList.remove("hidden"),auth.signInWithPopup(twitterProvider).then(e=>{fetchDataFromBouncer(e.credential)}).catch(handleError)});ui.logoutBtn.addEventListener("click",()=>auth.signOut());auth.onAuthStateChanged(e=>{e?console.log("User is logged in, but we will wait for button click."):showUI("login")});async function fetchDataFromBouncer(e){try{const t="https://twiteboard-bouncer.onrender.com/get-stats",a=await fetch(t,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_token:e.accessToken,user_secret:e.secret})});if(!a.ok){const e=await a.json();throw new Error(e.error||"Bouncer se jawab theek nahi aaya.")}const r=await a.json();updateUI(r)}catch(e){handleError(e)}}function updateUI(e){const t=e.profile,a=e.todayStats;ui.bannerImg.src=t.banner_url||"https://via.placeholder.com/400x130/cfd9de/cfd9de.png",ui.profilePic.src=t.profile_image_url.replace("_normal","_400x400"),ui.profileName.innerText=t.name,ui.profileUsername.innerText=`@${t.username}`,ui.following.innerText=t.following,ui.followers.innerText=t.followers,ui.totalPosts.innerText=t.total_posts,ui.todayPosts.innerText=a.tweets,ui.todayReplies.innerText=a.replies,showUI("dashboard")}function handleError(e){console.error("Ek galti hui hai:",e),showUI("login"),alert(`Error: ${e.message}`)}function showUI(e){"login"==e?(ui.login.classList.remove("hidden"),ui.dashboard.classList.add("hidden"),ui.loader.classList.add("hidden")):"dashboard"==e?(ui.login.classList.add("hidden"),ui.dashboard.classList.remove("hidden"),ui.loader.classList.add("hidden")):"loader"==e&&(ui.login.classList.add("hidden"),ui.dashboard.classList.add("hidden"),ui.loader.classList.remove("hidden"))};
     </script>
 </body>
 </html>
