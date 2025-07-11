@@ -4,331 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TwiteBoard - Your X Dashboard</title>
-    
-    <!-- ======================================================= -->
-    <!--          PART 1: WEBSITE KI DESIGN (CSS)                -->
-    <!-- ======================================================= -->
     <style>
-        /* Google se ek achha font laa rahe hain */
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-        /* Poori website ki default styling */
-        body {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background-color: #000000;
-            color: #e7e9ea;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 15px;
-            -webkit-font-smoothing: antialiased; /* Text ko smooth banane ke liye */
-        }
-        
-        /* Main container jiske andar sab kuch hai */
-        .container {
-            background-color: #16181c;
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid #2f3336;
-            text-align: center;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Badi heading 'TwiteBoard' ke liye */
-        h1 {
-            color: #e7e9ea;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        /* Chhote text ke liye */
-        p {
-            color: #71767b;
-            margin-bottom: 1.5rem;
-        }
-        
-        /* Is class se hum cheezein gayab karte hain */
-        .hidden {
-            display: none;
-        }
-        
-        /* Login aur Logout buttons ki style */
-        #login-btn, #logout-btn {
-            background-color: #1d9bf0;
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 99px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Button par mouse le jaane par halka sa rang badlega */
-        #login-btn:hover {
-            background-color: #1a8cd8;
-        }
-
-        /* X ka logo jo button ke andar hai */
-        .x-logo {
-            width: 20px;
-            height: 20px;
-        }
-        
-        /* Profile ka poora section */
-        .profile-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        /* Gol Profile Photo */
-        #profile-pic {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 3px solid #1d9bf0;
-            margin-bottom: 1rem;
-            background-color: #202327; /* Photo load hone tak ye rang dikhega */
-        }
-
-        /* Profile ka Naam */
-        #profile-name {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0;
-            color: #e7e9ea;
-        }
-
-        /* Profile ka Username (@handle) */
-        #profile-username {
-            font-size: 1rem;
-            color: #71767b;
-            margin: 0.25rem 0 0 0;
-        }
-        
-        /* Stats ke 3 box ka container */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Phone par ek ke neeche ek */
-            gap: 1rem;
-            text-align: left;
-        }
-
-        /* Har ek stat ka box (card) */
-        .stat-card {
-            background-color: #202327;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid #2f3336;
-        }
-
-        /* Card ke andar ki heading (Total Posts, etc.) */
-        .stat-card h3 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1rem;
-            color: #71767b;
-            font-weight: normal;
-        }
-
-        /* Card ke andar ki ginti (number) */
-        .stat-card p {
-            margin: 0;
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #e7e9ea;
-        }
-
-        /* Logout button ki alag style */
-        #logout-btn {
-            margin-top: 2rem;
-            background-color: rgba(224, 36, 94, 0.1);
-            color: #e0245e;
-            border: 1px solid #e0245e;
-        }
-
-        /* Data load hone ke time dikhne wala message */
-        #loading-message {
-            font-weight: bold;
-            color: #1d9bf0;
-            padding: 2rem 0;
-        }
+        body{font-family:'Roboto',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background-color:#000;color:#e7e9ea;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:15px;-webkit-font-smoothing:antialiased}
+        .container{background-color:#16181c;padding:2rem;border-radius:16px;border:1px solid #2f3336;text-align:center;width:100%;max-width:500px;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+        h1{color:#e7e9ea;font-size:1.8rem;margin-bottom:.5rem}
+        p{color:#71767b;margin-bottom:1.5rem}
+        .hidden{display:none}
+        #login-btn,#logout-btn{background-color:#1d9bf0;color:#fff;border:none;padding:12px 24px;border-radius:99px;font-size:1rem;font-weight:700;cursor:pointer;transition:background-color .2s;display:inline-flex;align-items:center;gap:10px}
+        #login-btn:hover{background-color:#1a8cd8}
+        .x-logo{width:20px;height:20px}
+        .profile-section{display:flex;flex-direction:column;align-items:center;margin-bottom:2rem}
+        #profile-pic{width:80px;height:80px;border-radius:50%;border:3px solid #1d9bf0;margin-bottom:1rem;background-color:#202327}
+        #profile-name{font-size:1.5rem;font-weight:700;margin:0;color:#e7e9ea}
+        #profile-username{font-size:1rem;color:#71767b;margin:.25rem 0 0 0}
+        .stats-grid{display:grid;grid-template-columns:1fr;gap:1rem;text-align:left}
+        .stat-card{background-color:#202327;padding:1.5rem;border-radius:12px;border:1px solid #2f3336}
+        .stat-card h3{margin:0 0 .5rem 0;font-size:1rem;color:#71767b;font-weight:400}
+        .stat-card p{margin:0;font-size:2.5rem;font-weight:700;color:#e7e9ea}
+        #logout-btn{margin-top:2rem;background-color:rgba(224,36,94,.1);color:#e0245e;border:1px solid #e0245e}
+        #loading-message{font-weight:700;color:#1d9bf0;padding:2rem 0}
     </style>
 </head>
 <body>
-
-    <!-- ======================================================= -->
-    <!--        PART 2: WEBSITE KA DHANCHA (HTML)                -->
-    <!-- ======================================================= -->
     <div class="container">
-        
-        <!-- Login Screen (Ye shuru mein dikhegi) -->
-        <div id="login-container">
-            <h1>TwiteBoard</h1>
-            <p>Apni daily X/Twitter activity track karne ke liye login karein.</p>
-            <button id="login-btn">
-                <svg viewBox="0 0 24 24" class="x-logo"><g><path fill="white" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>
-                Connect with X
-            </button>
-        </div>
-
-        <!-- Dashboard Screen (Ye shuru mein chupi rahegi) -->
-        <div id="dashboard" class="hidden">
-            <h1>TwiteBoard</h1>
-            
-            <!-- Ye loading message hai jo data aane tak dikhega -->
-            <div id="loading-message">
-                <p>Aapka data laya ja raha hai, कृपया प्रतीक्षा करें...</p>
-            </div>
-            
-            <!-- Jab data aa jayega, to ye poora hissa dikhega -->
-            <div id="dashboard-content" class="hidden">
-                <!-- Profile Section -->
-                <div class="profile-section">
-                    <img id="profile-pic" src="" alt="Profile Picture">
-                    <h2 id="profile-name"></h2>
-                    <p id="profile-username"></p>
-                </div>
-                
-                <!-- Stats Section -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>Total Posts Today</h3>
-                        <p id="tweet-count"></p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Replies Today</h3>
-                        <p id="reply-count"></p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Followers</h3>
-                        <p id="follower-count"></p>
-                    </div>
-                </div>
-            </div>
-
-            <button id="logout-btn">Logout</button>
-        </div>
+        <!-- Login Screen -->
+        <div id="login-container"><h1>TwiteBoard</h1><p>Apni daily X/Twitter activity track karne ke liye login karein.</p><button id="login-btn"><svg viewBox="0 0 24 24" class="x-logo"><g><path fill="white" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>Connect with X</button></div>
+        <!-- Dashboard Screen -->
+        <div id="dashboard" class="hidden"><h1>TwiteBoard</h1><div id="loading-message"><p>Aapka data laya ja raha hai...</p></div><div id="dashboard-content" class="hidden"><div class="profile-section"><img id="profile-pic" alt="Profile Picture"><h2 id="profile-name"></h2><p id="profile-username"></p></div><div class="stats-grid"><div class="stat-card"><h3>Total Posts Today</h3><p id="tweet-count"></p></div><div class="stat-card"><h3>Total Replies Today</h3><p id="reply-count"></p></div><div class="stat-card"><h3>Total Followers</h3><p id="follower-count"></p></div></div></div><button id="logout-btn">Logout</button></div>
     </div>
     
-    <!-- ======================================================= -->
-    <!--      PART 3: GOOGLE FIREBASE KI LIBRARIES               -->
-    <!-- ======================================================= -->
-    <!-- Ye Google ki taraf se code hai jo login mein madad karega -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-    <!-- ======================================================= -->
-    <!--        PART 4: WEBSITE KA DIMAG (JAVASCRIPT)            -->
-    <!-- ======================================================= -->
     <script>
-        // --- STEP A: Apne Firebase project ko yahan jodo ---
         const firebaseConfig = {
-            // Ye config tumhare 'twiteboard' project ki hai
             apiKey: "AIzaSyAVuS0B79Uk24GmPnbj3Tq7M3sgZeWdmA4",
             authDomain: "twiteboard.firebaseapp.com",
             projectId: "twiteboard",
             storageBucket: "twiteboard.appspot.com",
             messagingSenderId: "1029239475877",
             appId: "1:1029239475877:web:7a2eefb61a2a0566ba874c",
-            measurementId: "G-5MMDDYZYZP"
         };
-        
-        // Firebase ko start karo
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const twitterProvider = new firebase.auth.TwitterAuthProvider();
 
-        // --- STEP B: HTML ke saare important hisson ko pakad lo ---
         const ui = {
-            loginScreen: document.getElementById('login-container'),
-            dashboardScreen: document.getElementById('dashboard'),
-            loginButton: document.getElementById('login-btn'),
-            logoutButton: document.getElementById('logout-btn'),
-            loadingText: document.getElementById('loading-message'),
-            dashboardContent: document.getElementById('dashboard-content'),
-            profilePic: document.getElementById('profile-pic'),
-            profileName: document.getElementById('profile-name'),
-            profileUsername: document.getElementById('profile-username'),
-            tweetCount: document.getElementById('tweet-count'),
-            replyCount: document.getElementById('reply-count'),
-            followerCount: document.getElementById('follower-count'),
+            login: document.getElementById('login-container'),
+            dashboard: document.getElementById('dashboard'),
+            loginBtn: document.getElementById('login-btn'),
+            logoutBtn: document.getElementById('logout-btn'),
+            loader: document.getElementById('loading-message'),
+            content: document.getElementById('dashboard-content'),
+            pic: document.getElementById('profile-pic'),
+            name: document.getElementById('profile-name'),
+            username: document.getElementById('profile-username'),
+            tweets: document.getElementById('tweet-count'),
+            replies: document.getElementById('reply-count'),
+            followers: document.getElementById('follower-count'),
         };
 
-        // --- STEP C: Buttons par click hone par kya karna hai ---
-        
-        // Jab Login button par click ho
-        ui.loginButton.addEventListener('click', () => {
-            // Twitter ka popup kholo
-            auth.signInWithPopup(twitterProvider).catch(error => {
-                console.error("Login mein galti hui: ", error);
-                alert("Login fail ho gaya. Kripya dobara try karein.");
-            });
+        ui.loginBtn.addEventListener('click', () => {
+            auth.signInWithPopup(twitterProvider).catch(handleError);
         });
-
-        // Jab Logout button par click ho
-        ui.logoutButton.addEventListener('click', () => {
+        ui.logoutBtn.addEventListener('click', () => {
             auth.signOut();
         });
 
-        // --- STEP D: Sabse Zaroori - Login hai ya nahi, ye check karte raho ---
         auth.onAuthStateChanged(user => {
             if (user) {
-                // Agar user login hai:
-                // 1. Login screen chupao, Dashboard dikhao
-                ui.loginScreen.classList.add('hidden');
-                ui.dashboardScreen.classList.remove('hidden');
-                
-                // 2. Abhi ke liye, nakli (dummy) data se dashboard bhar do
-                // ASLI DATA AANE PAR HUM ISE BADAL DENGE
-                const dummyData = {
-                    profile: {
-                        name: user.displayName, // Firebase se naam mil jata hai
-                        username: user.providerData[0].screenName, // Firebase se username mil jata hai
-                        profile_image_url: user.photoURL.replace('_normal', '_400x400') // Badi photo ke liye
-                    },
-                    stats: {
-                        tweetsToday: 5, // Nakli data
-                        repliesToday: 12, // Nakli data
-                        followersCount: "10K" // Nakli data
-                    }
-                };
-                updateDashboard(dummyData); // Dashboard ko is nakli data se bharo
-
+                ui.login.classList.add('hidden');
+                ui.dashboard.classList.remove('hidden');
+                ui.content.classList.add('hidden');
+                ui.loader.classList.remove('hidden');
+                fetchDataFromBouncer(user);
             } else {
-                // Agar user ne logout kar diya hai:
-                // 1. Dashboard chupao, Login screen dikhao
-                ui.dashboardScreen.classList.add('hidden');
-                ui.loginScreen.classList.remove('hidden');
+                ui.dashboard.classList.add('hidden');
+                ui.login.classList.remove('hidden');
             }
         });
-        
-        // Ye function Dashboard ko data se bharta hai
-        function updateDashboard(data) {
-            // Loading message chupao, asli content dikhao
-            ui.loadingText.classList.add('hidden');
-            ui.dashboardContent.classList.remove('hidden');
-            
-            // Profile section bharo
-            ui.profilePic.src = data.profile.profile_image_url;
-            ui.profileName.innerText = data.profile.name;
-            ui.profileUsername.innerText = `@${data.profile.username}`;
-            
-            // Stats ke box bharo
-            ui.tweetCount.innerText = data.stats.tweetsToday;
-            ui.replyCount.innerText = data.stats.repliesToday;
-            ui.followerCount.innerText = data.stats.followersCount;
+
+        async function fetchDataFromBouncer(user) {
+            try {
+                // Ye user ke login ke baad temporary tokens deta hai. 
+                // reauthenticateWithPopup se hum fresh tokens lete hain.
+                const credential = await user.reauthenticateWithPopup(twitterProvider).then(result => result.credential);
+
+                // Maine tumhara Render.com wala URL yahan daal diya hai
+                const bouncerUrl = "https://twiteboard-bouncer.onrender.com/get-stats";
+
+                const response = await fetch(bouncerUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_token: credential.accessToken,
+                        user_secret: credential.secret
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "Bouncer se jawab theek nahi aaya.");
+                }
+
+                const data = await response.json();
+                updateUI(data);
+
+            } catch (error) {
+                handleError(error);
+            }
         }
 
+        function updateUI(data) {
+            ui.pic.src = data.profile.profile_image_url.replace('_normal', '_400x400');
+            ui.name.innerText = data.profile.name;
+            ui.username.innerText = `@${data.profile.username}`;
+            ui.tweets.innerText = data.stats.tweetsToday;
+            ui.replies.innerText = data.stats.repliesToday;
+            ui.followers.innerText = data.stats.followersCount;
+            
+            ui.loader.classList.add('hidden');
+            ui.content.classList.remove('hidden');
+        }
+
+        function handleError(error) {
+            console.error("Ek galti hui hai:", error);
+            // Agar user popup band kar de to error na dikhaye
+            if (error.code === 'auth/popup-closed-by-user') return;
+            ui.loader.innerText = `Error: ${error.message}`;
+            ui.loader.style.color = 'red';
+        }
     </script>
 </body>
 </html>
