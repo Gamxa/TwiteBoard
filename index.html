@@ -66,31 +66,40 @@
         };
 
         ui.loginBtn.addEventListener('click', () => {
-            auth.signInWithPopup(twitterProvider).catch(handleError);
+            // Humara naya plan: Jaise hi login safal ho, usi waqt data maang lo
+            auth.signInWithPopup(twitterProvider)
+                .then((result) => {
+                    // Login safal hua! Ab humare paas VIP Pass (credential) hai
+                    const credential = result.credential;
+                    // Foran bouncer ko VIP pass dekar data maango
+                    fetchDataFromBouncer(credential);
+                })
+                .catch(handleError);
         });
+
         ui.logoutBtn.addEventListener('click', () => {
             auth.signOut();
         });
 
         auth.onAuthStateChanged(user => {
+            // Ye function ab sirf UI dikhane ka kaam karega
             if (user) {
                 ui.login.classList.add('hidden');
                 ui.dashboard.classList.remove('hidden');
+                // Abhi data nahi dikhayenge, sirf loading message
                 ui.content.classList.add('hidden');
                 ui.loader.classList.remove('hidden');
-                fetchDataFromBouncer(user);
+                ui.loader.innerText = "Data laya ja raha hai...";
+                ui.loader.style.color = '#1d9bf0';
+
             } else {
                 ui.dashboard.classList.add('hidden');
                 ui.login.classList.remove('hidden');
             }
         });
 
-        async function fetchDataFromBouncer(user) {
+        async function fetchDataFromBouncer(credential) {
             try {
-                // Ye user ke login ke baad temporary tokens deta hai. 
-                // reauthenticateWithPopup se hum fresh tokens lete hain.
-                const credential = await user.reauthenticateWithPopup(twitterProvider).then(result => result.credential);
-
                 // Maine tumhara Render.com wala URL yahan daal diya hai
                 const bouncerUrl = "https://twiteboard-bouncer.onrender.com/get-stats";
 
@@ -134,6 +143,8 @@
             if (error.code === 'auth/popup-closed-by-user') return;
             ui.loader.innerText = `Error: ${error.message}`;
             ui.loader.style.color = 'red';
+            ui.content.classList.add('hidden');
+            ui.loader.classList.remove('hidden');
         }
     </script>
 </body>
