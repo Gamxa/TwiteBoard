@@ -28,15 +28,12 @@
 </head>
 <body>
     <div class="container">
-        <!-- Login Screen -->
         <div id="login-container"><h1>TwiteBoard</h1><p>Apni daily X/Twitter activity track karne ke liye login karein.</p><button id="login-btn"><svg viewBox="0 0 24 24" class="x-logo"><g><path fill="white" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>Connect with X</button></div>
-        <!-- Dashboard Screen -->
         <div id="dashboard" class="hidden"><h1>TwiteBoard</h1><div id="loading-message"><p>Aapka data laya ja raha hai...</p></div><div id="dashboard-content" class="hidden"><div class="profile-section"><img id="profile-pic" alt="Profile Picture"><h2 id="profile-name"></h2><p id="profile-username"></p></div><div class="stats-grid"><div class="stat-card"><h3>Total Posts Today</h3><p id="tweet-count"></p></div><div class="stat-card"><h3>Total Replies Today</h3><p id="reply-count"></p></div><div class="stat-card"><h3>Total Followers</h3><p id="follower-count"></p></div></div></div><button id="logout-btn">Logout</button></div>
     </div>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAVuS0B79Uk24GmPnbj3Tq7M3sgZeWdmA4",
@@ -49,7 +46,6 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const twitterProvider = new firebase.auth.TwitterAuthProvider();
-
         const ui = {
             login: document.getElementById('login-container'),
             dashboard: document.getElementById('dashboard'),
@@ -66,50 +62,44 @@
         };
 
         ui.loginBtn.addEventListener('click', () => {
-            // Humara naya plan: Jaise hi login safal ho, usi waqt data maang lo
-            auth.signInWithPopup(twitterProvider)
-                .then((result) => {
-                    // Login safal hua! Ab humare paas VIP Pass (credential) hai
-                    const credential = result.credential;
-                    // Foran bouncer ko VIP pass dekar data maango
-                    fetchDataFromBouncer(credential);
-                })
-                .catch(handleError);
+            auth.signInWithPopup(twitterProvider).catch(handleError);
         });
-
         ui.logoutBtn.addEventListener('click', () => {
             auth.signOut();
         });
 
-        auth.onAuthStateChanged(user => {
-            // Ye function ab sirf UI dikhane ka kaam karega
+        auth.onAuthStateChanged(async (user) => {
             if (user) {
                 ui.login.classList.add('hidden');
                 ui.dashboard.classList.remove('hidden');
-                // Abhi data nahi dikhayenge, sirf loading message
                 ui.content.classList.add('hidden');
                 ui.loader.classList.remove('hidden');
                 ui.loader.innerText = "Data laya ja raha hai...";
                 ui.loader.style.color = '#1d9bf0';
-
+                
+                // Ab hum yahan se bouncer ko call karenge
+                fetchDataFromBouncer(user);
             } else {
                 ui.dashboard.classList.add('hidden');
                 ui.login.classList.remove('hidden');
             }
         });
 
-        async function fetchDataFromBouncer(credential) {
+        async function fetchDataFromBouncer(user) {
             try {
-                // Maine tumhara Render.com wala URL yahan daal diya hai
+                // User ka "Driver's License" (Firebase Token) lo
+                const firebaseToken = await user.getIdToken();
+
+                // Bouncer ka address
                 const bouncerUrl = "https://twiteboard-bouncer.onrender.com/get-stats";
 
                 const response = await fetch(bouncerUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_token: credential.accessToken,
-                        user_secret: credential.secret
-                    })
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // License ko header me bhejo
+                        'Authorization': `Bearer ${firebaseToken}`
+                    }
                 });
 
                 if (!response.ok) {
@@ -139,12 +129,9 @@
 
         function handleError(error) {
             console.error("Ek galti hui hai:", error);
-            // Agar user popup band kar de to error na dikhaye
             if (error.code === 'auth/popup-closed-by-user') return;
             ui.loader.innerText = `Error: ${error.message}`;
             ui.loader.style.color = 'red';
-            ui.content.classList.add('hidden');
-            ui.loader.classList.remove('hidden');
         }
     </script>
 </body>
