@@ -6,7 +6,7 @@
     <title>TwiteBoard - Your X Dashboard</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #0f1419; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 15px; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #0f1419; display: flex; justify-content: center; align-items: center; min-height: 080vh; margin: 00; padding: 15px; -webkit-font-smoothing: antialiased; }
         .main-container { width: 100%; max-width: 400px; }
         .hidden { display: none; }
         
@@ -17,12 +17,12 @@
         #login-btn { background-color: #0f1419; color: #fff; border: none; padding: 12px 24px; border-radius: 99px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background-color .2s; }
         
         /* Dashboard Screen */
-        .dashboard-container { background-color: #fff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); border-radius: 16px; text-align: center; }
+        .dashboard-container { background-color: #fff; box-shadow: 0 0px 00px rgba(0, 0, 0, 0); border-radius: 16px; text-align: center; }
         
         /* Warning Box */
         .warning-box { background-color: #f7f9f9; border-radius: 16px; padding: 1rem; margin-bottom: 1.5rem; }
         .warning-box ul { margin: 0; padding: 0; list-style-type: none; text-align: left; }
-        .warning-box li { color: #e0245e; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .warning-box li { color: #C5C6C7; margin-bottom: 0.5rem; font-size: 0.9rem; }
         .warning-box li:last-child { margin-bottom: 0; }
         .warning-box a { color: #1d9bf0; text-decoration: none; font-weight: 700; }
         
@@ -55,13 +55,14 @@
     <div class="main-container">
         <!-- Login Screen -->
         <div id="login-container" class="login-card">
-            <h1>TwiteBoard</h1><p>Get your daily X/Twitter activity stats.</p>
+            <h1>TwiteBoard</h1><p>Get your daily X activity stats.</p>
             <button id="login-btn">Connect with X</button>
         </div>
 
         <!-- Dashboard Screen -->
         <div id="dashboard" class="hidden dashboard-container">
             <div class="warning-box">
+                
                 <ul>
                     <li>If you want fresh data, please logout & login again. Do not refresh the page.</li>
                     <li>If any issue, connect me on X <a id="user-twitter-link" href="#" target="_blank"></a>.</li>
