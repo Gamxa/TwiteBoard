@@ -62,54 +62,56 @@
         };
 
         ui.loginBtn.addEventListener('click', () => {
-            auth.signInWithPopup(twitterProvider).catch(handleError);
+            auth.signInWithPopup(twitterProvider)
+                .then((result) => {
+                    ui.login.classList.add('hidden');
+                    ui.dashboard.classList.remove('hidden');
+                    ui.content.classList.add('hidden');
+                    ui.loader.classList.remove('hidden');
+                    const credential = result.credential;
+                    fetchDataFromBouncer(credential);
+                })
+                .catch(handleError);
         });
+
         ui.logoutBtn.addEventListener('click', () => {
             auth.signOut();
         });
 
-        auth.onAuthStateChanged(async (user) => {
+        auth.onAuthStateChanged(user => {
             if (user) {
+                // Refresh hone par, user ko logout-login karne ko bolo
+                // Kyunki hamare paas refresh ke baad fresh X tokens nahi hote
                 ui.login.classList.add('hidden');
                 ui.dashboard.classList.remove('hidden');
                 ui.content.classList.add('hidden');
                 ui.loader.classList.remove('hidden');
-                ui.loader.innerText = "Data laya ja raha hai...";
-                ui.loader.style.color = '#1d9bf0';
-                
-                // Ab hum yahan se bouncer ko call karenge
-                fetchDataFromBouncer(user);
+                ui.loader.innerText = "Stats refresh karne ke liye, कृपया logout karke dobara login karein.";
             } else {
                 ui.dashboard.classList.add('hidden');
                 ui.login.classList.remove('hidden');
             }
         });
 
-        async function fetchDataFromBouncer(user) {
+        async function fetchDataFromBouncer(credential) {
             try {
-                // User ka "Driver's License" (Firebase Token) lo
-                const firebaseToken = await user.getIdToken();
-
-                // Bouncer ka address
                 const bouncerUrl = "https://twiteboard-bouncer.onrender.com/get-stats";
 
                 const response = await fetch(bouncerUrl, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        // License ko header me bhejo
-                        'Authorization': `Bearer ${firebaseToken}`
-                    }
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_token: credential.accessToken,
+                        user_secret: credential.secret
+                    })
                 });
 
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.error || "Bouncer se jawab theek nahi aaya.");
                 }
-
                 const data = await response.json();
                 updateUI(data);
-
             } catch (error) {
                 handleError(error);
             }
